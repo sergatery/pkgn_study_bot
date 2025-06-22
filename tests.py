@@ -57,15 +57,15 @@ async def notify_teacher(message: Message, cursor, test_id: int, score: int, tot
         if test_info and test_info[1]:
             teacher_id = test_info[1]
             test_title = test_info[0]
-            student_name = {message.from_user.full_name} 
-            student_name2 = "@{message.from_user.username}"
+            student_name = message.from_user.full_name
+            username = f"@{message.from_user.username}" if message.from_user.username else "(нет username)"
             percentage = score / total
             
             await message.bot.send_message(
                 teacher_id,
                 f"📌 Новый результат теста:\n"
                 f"📝 Название: {test_title}\n"
-                f"👤 Студент: {student_name}+{student_name2}\n"
+                f"👤 Студент: {student_name} {username}\n"
                 f"📊 Результат: {score}/{total} ({percentage:.0%})"
             )
     except Exception as e:
@@ -130,7 +130,7 @@ async def start_test(callback: CallbackQuery, state: FSMContext):
             'questions': questions,
             'current_question': 0,
             'answers': {},
-            'start_time': datetime.datetime.now().isoformat()
+            'end_time': datetime.datetime.now().isoformat()
         })
         
         await callback.answer()
