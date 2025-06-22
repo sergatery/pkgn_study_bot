@@ -57,14 +57,15 @@ async def notify_teacher(message: Message, cursor, test_id: int, score: int, tot
         if test_info and test_info[1]:
             teacher_id = test_info[1]
             test_title = test_info[0]
-            student_name = message.from_user.id
+            student_name = {message.from_user.full_name} 
+            student_name2 = "@{message.from_user.username}"
             percentage = score / total
             
             await message.bot.send_message(
                 teacher_id,
                 f"📌 Новый результат теста:\n"
                 f"📝 Название: {test_title}\n"
-                f"👤 Студент: {student_name}\n"
+                f"👤 Студент: {student_name}+{student_name2}\n"
                 f"📊 Результат: {score}/{total} ({percentage:.0%})"
             )
     except Exception as e:
